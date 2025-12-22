@@ -1,0 +1,20 @@
+<svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cloud shape with purple outline -->
+  <g transform="translate(10, 15)">
+    <!-- Cloud path -->
+    <path d="M 30 25 Q 30 15, 40 15 Q 45 10, 50 15 Q 60 15, 60 25 Q 60 35, 50 35 Q 45 35, 40 35 Q 30 35, 30 25 Z" 
+          fill="none" 
+          stroke="#667eea" 
+          stroke-width="2.5"/>
+  </g>
+  
+  <!-- AI CLOUD ENTERPRISES text in blue -->
+  <text x="75" y="28" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#4A90E2">
+    AI CLOUD ENTERPRISES
+  </text>
+  
+  <!-- aienter.in subtitle -->
+  <text x="75" y="42" font-family="Arial, sans-serif" font-size="10" fill="#667eea">
+    aienter.in
+  </text>
+</svg>

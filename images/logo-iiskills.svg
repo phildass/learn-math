@@ -1,0 +1,19 @@
+<svg width="280" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- iiskills text with pink "ii" and blue "skills" -->
+  <g>
+    <!-- Pink "ii" -->
+    <text x="10" y="28" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#E91E63">
+      ii
+    </text>
+    
+    <!-- Blue "skills" -->
+    <text x="30" y="28" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2196F3">
+      skills
+    </text>
+  </g>
+  
+  <!-- Subtitle -->
+  <text x="10" y="45" font-family="Arial, sans-serif" font-size="8" fill="#666">
+    INDIAN INSTITUTE OF PROFESSIONAL SKILLS DEVELOPMENT
+  </text>
+</svg>
