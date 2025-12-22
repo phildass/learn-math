@@ -4,315 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Learn Math</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Navbar */
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 15px 0;
-        }
-
-        .navbar-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 20px;
-        }
-
-        .logo-group {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .logo-aicloud {
-            height: 50px;
-            width: auto;
-            cursor: pointer;
-        }
-
-        .logo-iiskills {
-            height: 50px;
-            width: auto;
-            cursor: pointer;
-        }
-
-        .title-container {
-            flex: 1;
-        }
-
-        .navbar-title {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        /* Main Content */
-        .auth-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-        }
-
-        .auth-box {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 450px;
-            padding: 40px;
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .auth-header h2 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .auth-header p {
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .form-toggle {
-            text-align: center;
-            margin-top: 25px;
-            color: #666;
-        }
-
-        .form-toggle a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .form-toggle a:hover {
-            text-decoration: underline;
-        }
-
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .message.show {
-            display: block;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar-title {
-                font-size: 1.2rem;
-            }
-
-            .logo-group {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .logo-aicloud,
-            .logo-iiskills {
-                height: 35px;
-            }
-
-            .auth-box {
-                padding: 30px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo-group {
-                flex-direction: row;
-                gap: 10px;
-            }
-            
-            .logo-aicloud,
-            .logo-iiskills {
-                height: 30px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/public/css/styles.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="logo-group">
-                <a href="/"><img src="/images/logo-aicloud.svg" alt="AI Cloud Enterprises" class="logo-aicloud"></a>
-                <a href="/"><img src="/images/logo-iiskills.svg" alt="iiskills" class="logo-iiskills"></a>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/public/images/logo-aicloud.png" alt="AI Cloud Logo">
             </div>
-            <div class="title-container">
-                <h1 class="navbar-title">Indian Institute of Professional Skills Development</h1>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Auth Container -->
-    <div class="auth-container">
-        <div class="auth-box">
-            <!-- Login Form -->
-            <div id="loginForm">
-                <div class="auth-header">
-                    <h2>Welcome Back!</h2>
-                    <p>Login to continue your mathematics journey</p>
-                </div>
-
-                <div id="loginMessage" class="message"></div>
-
-                <form id="loginFormElement">
-                    <div class="form-group">
-                        <label for="loginEmail">Email</label>
-                        <input type="email" id="loginEmail" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" name="password" required>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Login</button>
-                </form>
-
-                <div class="form-toggle">
-                    Don't have an account? <a onclick="showRegisterForm()">Register here</a>
-                </div>
-            </div>
-
-            <!-- Register Form -->
-            <div id="registerForm" class="hidden">
-                <div class="auth-header">
-                    <h2>Create Account</h2>
-                    <p>Join us to start learning mathematics</p>
-                </div>
-
-                <div id="registerMessage" class="message"></div>
-
-                <form id="registerFormElement">
-                    <div class="form-group">
-                        <label for="registerName">Name *</label>
-                        <input type="text" id="registerName" name="name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerDob">Date of Birth *</label>
-                        <input type="date" id="registerDob" name="dateOfBirth" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerEmail">Email *</label>
-                        <input type="email" id="registerEmail" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerLocation">Location *</label>
-                        <input type="text" id="registerLocation" name="location" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="registerPassword">Password *</label>
-                        <input type="password" id="registerPassword" name="password" minlength="6" required>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Register</button>
-                </form>
-
-                <div class="form-toggle">
-                    Already have an account? <a onclick="showLoginForm()">Login here</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="auth.js"></script>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="user-login.html">User Login</a></li>
+                <li><a href="admin-login.html">Admin Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="login-form">
+            <h2>Login</h2>
+            <form>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Learn Math. All rights reserved.</p>
+    </footer>
 </body>
 </html>
