@@ -932,3 +932,57 @@ window.onclick = function(event) {
         closeTest();
     }
 }
+
+// Authentication functions
+async function checkAuthentication() {
+    try {
+        const response = await fetch('/api/auth/status');
+        const data = await response.json();
+        
+        if (!data.authenticated) {
+            // Not authenticated, redirect to login
+            window.location.href = '/login.html';
+            return false;
+        }
+        
+        // Update navbar with user info
+        const userNameEl = document.getElementById('userName');
+        if (userNameEl && data.user) {
+            userNameEl.textContent = `Welcome, ${data.user.name}!`;
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('Authentication check error:', error);
+        window.location.href = '/login.html';
+        return false;
+    }
+}
+
+async function handleLogout() {
+    try {
+        const response = await fetch('/api/logout', {
+            method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Clear session storage
+            sessionStorage.clear();
+            
+            // Redirect to login page
+            window.location.href = '/login.html';
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        // Still redirect to login on error
+        window.location.href = '/login.html';
+    }
+}
+
+// Check authentication on page load
+window.addEventListener('DOMContentLoaded', () => {
+    checkAuthentication();
+});
+
