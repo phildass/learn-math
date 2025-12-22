@@ -799,19 +799,19 @@ function closeModule() {
 // Start test - requires authentication
 async function startTest(moduleNum) {
     // Check if user is authenticated before allowing test
+    let isAuthenticated = false;
+    
     try {
         const response = await fetch('/api/auth/status');
         const data = await response.json();
-        
-        if (!data.authenticated) {
-            // Not authenticated, redirect to admin login with message
-            alert('Please login to take tests and track your progress.');
-            window.location.href = '/admin';
-            return;
-        }
+        isAuthenticated = data.authenticated;
     } catch (error) {
         console.error('Authentication check error:', error);
-        alert('Please login to take tests.');
+    }
+    
+    if (!isAuthenticated) {
+        // Not authenticated, redirect to admin login with message
+        alert('Please login to take tests and track your progress.');
         window.location.href = '/admin';
         return;
     }
