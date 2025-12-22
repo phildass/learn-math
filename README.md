@@ -29,7 +29,9 @@ cd learn-math
 npm install
 ```
 
-3. Start the server:
+3. The server will automatically create a `users.json` file when first run to store user data.
+
+4. Start the server:
 ```bash
 npm start
 ```
@@ -69,15 +71,16 @@ Click the "Logout" button in the top-right corner to end your session.
 
 ```
 learn-math/
-├── server.js           # Express server with API endpoints
-├── package.json        # Project dependencies
-├── index.html          # Main application page (protected)
-├── login.html          # Login and registration page
-├── auth.js             # Client-side authentication logic
-├── script.js           # Main application logic
-├── styles.css          # Application styles
-├── users.json          # User database (JSON file)
-└── .gitignore          # Git ignore file
+├── server.js              # Express server with API endpoints
+├── package.json           # Project dependencies
+├── index.html             # Main application page (protected)
+├── login.html             # Login and registration page
+├── auth.js                # Client-side authentication logic
+├── script.js              # Main application logic
+├── styles.css             # Application styles
+├── users.json             # User database (auto-created, not in git)
+├── users.json.template    # Template for users database
+└── .gitignore             # Git ignore file
 ```
 
 ## API Endpoints

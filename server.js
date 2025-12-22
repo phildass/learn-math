@@ -47,6 +47,11 @@ function readUsers() {
         const data = fs.readFileSync(USERS_FILE, 'utf8');
         return JSON.parse(data);
     } catch (error) {
+        // If file doesn't exist, create it with empty array
+        if (error.code === 'ENOENT') {
+            writeUsers([]);
+            return [];
+        }
         return [];
     }
 }
