@@ -12,16 +12,32 @@ const USERS_FILE = path.join(__dirname, 'users.json');
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Protect sensitive files from being served
+app.use((req, res, next) => {
+    const sensitiveFiles = ['users.json', 'package.json', 'package-lock.json', 'server.js'];
+    const requestedFile = path.basename(req.path);
+    
+    if (sensitiveFiles.includes(requestedFile)) {
+        return res.status(403).send('Forbidden');
+    }
+    next();
+});
+
 app.use(express.static(__dirname));
 
 // Session configuration
+// Note: For production, set cookie.secure to true when using HTTPS
+// Note: For production with state-changing operations, consider adding CSRF protection using csurf package
 app.use(session({
     secret: 'learn-math-secret-key-2024',
     resave: false,
     saveUninitialized: false,
     cookie: { 
         secure: false, // Set to true in production with HTTPS
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        httpOnly: true, // Prevent client-side JS from accessing the cookie
+        sameSite: 'strict' // CSRF protection
     }
 }));
 
@@ -50,6 +66,8 @@ function sanitizeInput(input) {
 }
 
 // API Routes
+// Note: For production deployment, add rate limiting middleware to prevent brute force attacks
+// Example: npm install express-rate-limit
 
 // Register endpoint
 app.post('/api/register', async (req, res) => {
