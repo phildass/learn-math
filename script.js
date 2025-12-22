@@ -750,6 +750,7 @@ let currentModule = null;
 let currentQuestion = 0;
 let score = 0;
 let answers = [];
+let testStartTime = null;
 
 // Show module content
 function showModule(moduleNum) {
@@ -798,16 +799,28 @@ function closeModule() {
 
 // Start test
 function startTest(moduleNum) {
-    closeModule();
-    currentModule = moduleNum;
-    currentQuestion = 0;
-    score = 0;
-    answers = [];
-    
-    const modal = document.getElementById('testModal');
-    modal.style.display = 'block';
-    
-    showQuestion();
+    // Check if user is authenticated before allowing test
+    checkAuthenticationForTest().then(isAuthenticated => {
+        if (!isAuthenticated) {
+            // Show login prompt
+            if (confirm('Please sign up or login to take tests. Would you like to go to the login page?')) {
+                window.location.href = '/login';
+            }
+            return;
+        }
+        
+        closeModule();
+        currentModule = moduleNum;
+        currentQuestion = 0;
+        score = 0;
+        answers = [];
+        testStartTime = new Date();
+        
+        const modal = document.getElementById('testModal');
+        modal.style.display = 'block';
+        
+        showQuestion();
+    });
 }
 
 // Show question
@@ -899,12 +912,19 @@ function showResults() {
         message = 'Keep practicing! Review the module and retake the test. 💪';
     }
     
+    // Calculate time taken
+    const timeTaken = testStartTime ? Math.round((new Date() - testStartTime) / 1000 / 60) + ' minutes' : 'N/A';
+    
+    // Save test result
+    saveTestResult(currentModule, score, totalQuestions, timeTaken);
+    
     contentArea.innerHTML = `
         <div class="test-result">
             <h2>Test Complete!</h2>
             <div class="score">${score} / ${totalQuestions}</div>
             <div class="result-message">${message}</div>
             <p>You scored ${percentage.toFixed(0)}%</p>
+            <p>Time taken: ${timeTaken}</p>
             <button class="start-test-btn" onclick="startTest(${currentModule})">Retake Test</button>
             <button class="back-btn" onclick="closeTest()">Back to Modules</button>
         </div>
@@ -939,23 +959,69 @@ async function checkAuthentication() {
         const response = await fetch('/api/auth/status');
         const data = await response.json();
         
-        if (!data.authenticated) {
-            // Not authenticated, redirect to login
-            window.location.href = '/login.html';
+        const userNameEl = document.getElementById('userName');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        
+        if (data.authenticated) {
+            // User is authenticated
+            if (userNameEl) {
+                userNameEl.textContent = `Welcome, ${data.user.name}!`;
+            }
+            if (logoutBtn) logoutBtn.style.display = 'inline-block';
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (signupBtn) signupBtn.style.display = 'none';
+            return true;
+        } else {
+            // Not authenticated - show login/signup buttons
+            if (userNameEl) userNameEl.textContent = '';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            if (loginBtn) loginBtn.style.display = 'inline-block';
+            if (signupBtn) signupBtn.style.display = 'inline-block';
             return false;
         }
-        
-        // Update navbar with user info
-        const userNameEl = document.getElementById('userName');
-        if (userNameEl && data.user) {
-            userNameEl.textContent = `Welcome, ${data.user.name}!`;
-        }
-        
-        return true;
     } catch (error) {
         console.error('Authentication check error:', error);
-        window.location.href = '/login.html';
         return false;
+    }
+}
+
+async function checkAuthenticationForTest() {
+    try {
+        const response = await fetch('/api/auth/status');
+        const data = await response.json();
+        return data.authenticated;
+    } catch (error) {
+        console.error('Authentication check error:', error);
+        return false;
+    }
+}
+
+async function saveTestResult(moduleId, score, totalQuestions, timeTaken) {
+    try {
+        const moduleName = moduleData[moduleId].title;
+        
+        const response = await fetch('/api/test-result', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                moduleId,
+                moduleName,
+                score,
+                totalQuestions,
+                timeTaken
+            })
+        });
+        
+        const data = await response.json();
+        if (!data.success) {
+            console.error('Failed to save test result:', data.message);
+        }
+    } catch (error) {
+        console.error('Error saving test result:', error);
     }
 }
 

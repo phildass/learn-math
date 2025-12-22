@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Learn Math</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .profile-header h1 {
+            margin-bottom: 10px;
+        }
+
+        .profile-header p {
+            opacity: 0.9;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .info-item label {
+            font-weight: 600;
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-item span {
+            color: #2c3e50;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .test-result-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .test-result-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .test-module-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .test-score {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .test-score.excellent {
+            color: #27ae60;
+        }
+
+        .test-score.good {
+            color: #3498db;
+        }
+
+        .test-score.average {
+            color: #f39c12;
+        }
+
+        .test-score.poor {
+            color: #e74c3c;
+        }
+
+        .test-date {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo-container">
+                <img src="https://iiskills.cloud/logo.png" alt="IISkills Cloud" class="logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iNDAiIGZpbGw9IiM0QTkwRTIiLz48dGV4dCB4PSI2MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPklJU2tpbGxzLmNsb3VkPC90ZXh0Pjwvc3ZnPg=='" />
+            </div>
+            <div class="title-container">
+                <h1 class="navbar-title">Indian Institute of Professional Skills Development</h1>
+            </div>
+            <div class="user-info">
+                <span id="userName" class="user-name"></span>
+                <button id="logoutBtn" class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1 id="profileName">My Profile</h1>
+            <p id="memberSince">Member since: Loading...</p>
+        </div>
+
+        <div class="profile-content">
+            <!-- Personal Information -->
+            <div class="profile-card">
+                <h2>Personal Information</h2>
+                <div class="info-item">
+                    <label>Name</label>
+                    <span id="infoName">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <label>Email</label>
+                    <span id="infoEmail">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <label>Date of Birth</label>
+                    <span id="infoDob">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <label>Location</label>
+                    <span id="infoLocation">Loading...</span>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn" onclick="showEditProfile()">Edit Profile</button>
+                    <button class="btn btn-secondary" onclick="showChangePassword()">Change Password</button>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="profile-card">
+                <h2>Learning Progress</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-number" id="statTests">0</span>
+                        <span class="stat-label">Tests Taken</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number" id="statModules">0</span>
+                        <span class="stat-label">Modules Completed</span>
+                    </div>
+                </div>
+                <div>
+                    <label style="color: #2c3e50; font-weight: 600;">Overall Progress</label>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="overallProgress" style="width: 0%">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test History -->
+        <div class="profile-card">
+            <h2>Test History</h2>
+            <div id="testHistory">
+                <div class="no-data">No tests taken yet. Start learning!</div>
+            </div>
+            <div class="action-buttons">
+                <a href="/" class="btn">Browse Modules</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditProfile()">&times;</span>
+            <h2>Edit Profile</h2>
+            <div id="editMessage" class="message"></div>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editName">Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDob">Date of Birth</label>
+                    <input type="date" id="editDob" required>
+                </div>
+                <div class="form-group">
+                    <label for="editLocation">Location</label>
+                    <input type="text" id="editLocation" required>
+                </div>
+                <button type="submit" class="btn">Save Changes</button>
+                <button type="button" class="btn btn-secondary" onclick="closeEditProfile()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChangePassword()">&times;</span>
+            <h2>Change Password</h2>
+            <div id="passwordMessage" class="message"></div>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password (min 6 characters)</label>
+                    <input type="password" id="newPassword" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" minlength="6" required>
+                </div>
+                <button type="submit" class="btn">Change Password</button>
+                <button type="button" class="btn btn-secondary" onclick="closeChangePassword()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/profile.js"></script>
+</body>
+</html>
