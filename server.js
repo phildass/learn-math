@@ -70,6 +70,55 @@ function sanitizeInput(input) {
     return input.replace(/[<>]/g, '').trim();
 }
 
+// Initialize admin user if not exists
+async function initializeAdmin() {
+    const users = readUsers();
+    const adminExists = users.find(u => u.email === 'admin@iiskills.cloud');
+    
+    if (!adminExists) {
+        const hashedPassword = await bcrypt.hash('phil123', 10);
+        const adminUser = {
+            id: 'admin-' + Date.now().toString(),
+            name: 'Administrator',
+            email: 'admin@iiskills.cloud',
+            password: hashedPassword,
+            role: 'admin',
+            createdAt: new Date().toISOString(),
+            dateOfBirth: '1990-01-01',
+            location: 'System',
+            testResults: [],
+            completedModules: []
+        };
+        users.push(adminUser);
+        writeUsers(users);
+        console.log('Admin user created with email: admin@iiskills.cloud and password: phil123');
+    }
+}
+
+// Middleware to check if user is admin
+function isAdmin(req, res, next) {
+    if (!req.session.userId) {
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+    
+    const users = readUsers();
+    const user = users.find(u => u.id === req.session.userId);
+    
+    if (!user || user.role !== 'admin') {
+        return res.status(403).json({ success: false, message: 'Forbidden - Admin access required' });
+    }
+    
+    next();
+}
+
+// Middleware to check if user is authenticated
+function isAuthenticated(req, res, next) {
+    if (!req.session.userId) {
+        return res.status(401).json({ success: false, message: 'Unauthorized - Please login' });
+    }
+    next();
+}
+
 // API Routes
 // Note: For production deployment, add rate limiting middleware to prevent brute force attacks
 // Example: npm install express-rate-limit
@@ -129,7 +178,10 @@ app.post('/api/register', async (req, res) => {
             email: sanitizedEmail,
             location: sanitizedLocation,
             password: hashedPassword,
-            createdAt: new Date().toISOString()
+            role: 'user',
+            createdAt: new Date().toISOString(),
+            testResults: [],
+            completedModules: []
         };
 
         users.push(newUser);
@@ -185,13 +237,15 @@ app.post('/api/login', async (req, res) => {
         req.session.userId = user.id;
         req.session.userName = user.name;
         req.session.userEmail = user.email;
+        req.session.userRole = user.role || 'user';
 
         res.json({ 
             success: true, 
             message: 'Login successful',
             user: {
                 name: user.name,
-                email: user.email
+                email: user.email,
+                role: user.role || 'user'
             }
         });
     } catch (error) {
@@ -226,7 +280,8 @@ app.get('/api/auth/status', (req, res) => {
             authenticated: true,
             user: {
                 name: req.session.userName,
-                email: req.session.userEmail
+                email: req.session.userEmail,
+                role: req.session.userRole || 'user'
             }
         });
     } else {
@@ -236,12 +291,203 @@ app.get('/api/auth/status', (req, res) => {
     }
 });
 
+// Get user profile
+app.get('/api/profile', isAuthenticated, (req, res) => {
+    try {
+        const users = readUsers();
+        const user = users.find(u => u.id === req.session.userId);
+        
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        
+        // Don't send password
+        const { password, ...userProfile } = user;
+        res.json({ success: true, profile: userProfile });
+    } catch (error) {
+        console.error('Profile fetch error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// Update user profile
+app.put('/api/profile', isAuthenticated, async (req, res) => {
+    try {
+        const { name, location, dateOfBirth } = req.body;
+        const users = readUsers();
+        const userIndex = users.findIndex(u => u.id === req.session.userId);
+        
+        if (userIndex === -1) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        
+        // Update user data
+        if (name) users[userIndex].name = sanitizeInput(name);
+        if (location) users[userIndex].location = sanitizeInput(location);
+        if (dateOfBirth) users[userIndex].dateOfBirth = dateOfBirth;
+        
+        writeUsers(users);
+        
+        // Update session
+        req.session.userName = users[userIndex].name;
+        
+        res.json({ success: true, message: 'Profile updated successfully' });
+    } catch (error) {
+        console.error('Profile update error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// Change password
+app.post('/api/change-password', isAuthenticated, async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ success: false, message: 'Both passwords are required' });
+        }
+        
+        if (newPassword.length < 6) {
+            return res.status(400).json({ success: false, message: 'New password must be at least 6 characters' });
+        }
+        
+        const users = readUsers();
+        const userIndex = users.findIndex(u => u.id === req.session.userId);
+        
+        if (userIndex === -1) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        
+        // Verify current password
+        const isValid = await bcrypt.compare(currentPassword, users[userIndex].password);
+        if (!isValid) {
+            return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+        }
+        
+        // Hash and update new password
+        users[userIndex].password = await bcrypt.hash(newPassword, 10);
+        writeUsers(users);
+        
+        res.json({ success: true, message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Password change error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// Save test result
+app.post('/api/test-result', isAuthenticated, (req, res) => {
+    try {
+        const { moduleId, moduleName, score, totalQuestions, timeTaken } = req.body;
+        
+        if (!moduleId || !moduleName || score === undefined || !totalQuestions) {
+            return res.status(400).json({ success: false, message: 'Missing required fields' });
+        }
+        
+        const users = readUsers();
+        const userIndex = users.findIndex(u => u.id === req.session.userId);
+        
+        if (userIndex === -1) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        
+        const testResult = {
+            moduleId,
+            moduleName,
+            score,
+            totalQuestions,
+            dateTaken: new Date().toISOString(),
+            timeTaken: timeTaken || 'N/A'
+        };
+        
+        // Add to test results
+        if (!users[userIndex].testResults) {
+            users[userIndex].testResults = [];
+        }
+        users[userIndex].testResults.push(testResult);
+        
+        // Mark module as completed if score is good (e.g., >= 70%)
+        const percentage = (score / totalQuestions) * 100;
+        if (percentage >= 70) {
+            if (!users[userIndex].completedModules) {
+                users[userIndex].completedModules = [];
+            }
+            if (!users[userIndex].completedModules.includes(moduleId)) {
+                users[userIndex].completedModules.push(moduleId);
+            }
+        }
+        
+        writeUsers(users);
+        
+        res.json({ success: true, message: 'Test result saved successfully' });
+    } catch (error) {
+        console.error('Test result save error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// Admin: Get all users
+app.get('/api/admin/users', isAdmin, (req, res) => {
+    try {
+        const users = readUsers();
+        // Don't send passwords
+        const usersWithoutPasswords = users.map(({ password, ...user }) => user);
+        res.json({ success: true, users: usersWithoutPasswords });
+    } catch (error) {
+        console.error('Admin get users error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+// Admin: Get module data
+app.get('/api/admin/modules', isAdmin, (req, res) => {
+    try {
+        // Read module data from script.js
+        const scriptContent = fs.readFileSync(path.join(__dirname, 'script.js'), 'utf8');
+        res.json({ success: true, message: 'Module data retrieved' });
+    } catch (error) {
+        console.error('Admin get modules error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
 // Serve index.html for root
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Admin routes
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-login.html'));
+});
+
+app.get('/admin/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-dashboard.html'));
+});
+
+app.get('/admin/edit-module/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-edit-module.html'));
+});
+
+// User routes
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'user-login.html'));
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'user-signup.html'));
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'user-signup.html'));
+});
+
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, 'user-profile.html'));
+});
+
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    await initializeAdmin();
     console.log(`Learn Math server running on http://localhost:${PORT}`);
 });

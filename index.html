@@ -16,9 +16,11 @@
             <div class="title-container">
                 <h1 class="navbar-title">Indian Institute of Professional Skills Development</h1>
             </div>
-            <div class="user-info">
+            <div class="user-info" id="userInfo">
                 <span id="userName" class="user-name"></span>
-                <button id="logoutBtn" class="logout-btn" onclick="handleLogout()">Logout</button>
+                <button id="logoutBtn" class="logout-btn" onclick="handleLogout()" style="display: none;">Logout</button>
+                <a href="/login" id="loginBtn" class="logout-btn" style="display: none;">Login</a>
+                <a href="/signup" id="signupBtn" class="logout-btn" style="display: none; margin-left: 10px;">Sign Up</a>
             </div>
         </div>
     </nav>
