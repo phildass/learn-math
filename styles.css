@@ -31,22 +31,10 @@ body {
     gap: 20px;
 }
 
-.logo-container {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
 .logo-group {
     display: flex;
     gap: 15px;
     align-items: center;
-}
-
-.logo {
-    height: 50px;
-    width: auto;
-    display: block;
 }
 
 .logo-aicloud {
@@ -56,7 +44,7 @@ body {
 }
 
 .logo-iiskills {
-    height: 45px;
+    height: 50px;
     width: auto;
     cursor: pointer;
 }
