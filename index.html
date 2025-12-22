@@ -3,30 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn Math - Home</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <title>Learn Math - Indian Institute of Professional Skills Development</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="/public/images/logo-aicloud.png" alt="AI Cloud Logo">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo-group">
+                <a href="/"><img src="/public/images/logo-aicloud.png" alt="AI Cloud Enterprises" class="logo-aicloud"></a>
+                <a href="/"><img src="/public/images/logo-iiskills.png" alt="iiskills" class="logo-iiskills"></a>
             </div>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="user-login.html">User Login</a></li>
-                <li><a href="admin-login.html">Admin Login</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="hero">
-            <h1>Welcome to Learn Math</h1>
-            <p>Your journey to mastering mathematics starts here!</p>
+            <div class="title-container">
+                <h1 class="navbar-title">Indian Institute of Professional Skills Development</h1>
+            </div>
+            <div class="user-info" id="userInfo">
+                <span id="userName" class="user-name"></span>
+                <button id="logoutBtn" class="logout-btn" onclick="handleLogout()" style="display: none;">Logout</button>
+                <a href="/login" id="loginBtn" class="logout-btn" style="display: none;">Login</a>
+                <a href="/signup" id="signupBtn" class="logout-btn" style="display: none; margin-left: 10px;">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="hero-section">
+            <h2>Learn Mathematics</h2>
+            <p class="subtitle">A Free Tutorial Course from Intermediate to Advanced</p>
+            <p class="description">Master mathematics through 10 comprehensive modules, each with detailed lessons, sample examples, and fascinating facts from around the world!</p>
+        </section>
+
+        <!-- Modules Section -->
+        <section class="modules-section" id="modules">
+            <h3>Course Modules</h3>
+            <div class="modules-grid">
+                <!-- Module 1 -->
+                <div class="module-card" onclick="showModule(1)">
+                    <div class="module-number">Module 1</div>
+                    <h4>Number Systems & Operations</h4>
+                    <p>Learn about different number systems and basic operations</p>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="module-card" onclick="showModule(2)">
+                    <div class="module-number">Module 2</div>
+                    <h4>Algebra Fundamentals</h4>
+                    <p>Master algebraic expressions and equations</p>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="module-card" onclick="showModule(3)">
+                    <div class="module-number">Module 3</div>
+                    <h4>Geometry Basics</h4>
+                    <p>Explore shapes, angles, and spatial reasoning</p>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="module-card" onclick="showModule(4)">
+                    <div class="module-number">Module 4</div>
+                    <h4>Trigonometry</h4>
+                    <p>Understanding angles, triangles, and trigonometric functions</p>
+                </div>
+
+                <!-- Module 5 -->
+                <div class="module-card" onclick="showModule(5)">
+                    <div class="module-number">Module 5</div>
+                    <h4>Calculus Introduction</h4>
+                    <p>Differentiation and integration fundamentals</p>
+                </div>
+
+                <!-- Module 6 -->
+                <div class="module-card" onclick="showModule(6)">
+                    <div class="module-number">Module 6</div>
+                    <h4>Probability & Statistics</h4>
+                    <p>Learn about data analysis and probability theory</p>
+                </div>
+
+                <!-- Module 7 -->
+                <div class="module-card" onclick="showModule(7)">
+                    <div class="module-number">Module 7</div>
+                    <h4>Linear Algebra</h4>
+                    <p>Matrices, vectors, and linear transformations</p>
+                </div>
+
+                <!-- Module 8 -->
+                <div class="module-card" onclick="showModule(8)">
+                    <div class="module-number">Module 8</div>
+                    <h4>Advanced Calculus</h4>
+                    <p>Multivariable calculus and advanced techniques</p>
+                </div>
+
+                <!-- Module 9 -->
+                <div class="module-card" onclick="showModule(9)">
+                    <div class="module-number">Module 9</div>
+                    <h4>Differential Equations</h4>
+                    <p>Solving ordinary and partial differential equations</p>
+                </div>
+
+                <!-- Module 10 -->
+                <div class="module-card" onclick="showModule(10)">
+                    <div class="module-number">Module 10</div>
+                    <h4>Number Theory</h4>
+                    <p>Prime numbers, divisibility, and advanced concepts</p>
+                </div>
+            </div>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2025 Learn Math. All rights reserved.</p>
-    </footer>
+
+    <!-- Module Content Modal -->
+    <div id="moduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModule()">&times;</span>
+            <div id="moduleContentArea"></div>
+        </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTest()">&times;</span>
+            <div id="testContentArea"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
