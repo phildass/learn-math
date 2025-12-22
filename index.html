@@ -3,82 +3,595 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn Math - Interactive Math Learning</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Advanced Mathematics Tutorial Platform - AI Cloud Enterprises & IISkills</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border-radius: 25px;
+            border: 2px solid #667eea;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .partnership {
+            font-size: 1rem;
+            color: #888;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        /* Module Grid */
+        .modules-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .module-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .module-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .module-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .module-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+            width: 100%;
+        }
+
+        .module-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            margin: 2rem auto;
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #cc0000;
+        }
+
+        .lesson-content {
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .lesson-content h3 {
+            color: #667eea;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content ul, .lesson-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .formula {
+            background: #fff9e6;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .test-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .test-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Test Modal Styles */
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #e8eaf6;
+        }
+
+        .submit-test-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .test-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .test-result.pass {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .test-result.fail {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .logo-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <div class="nav-content">
-            <div class="logo">
-                <span class="logo-icon">📐</span>
-                <span class="logo-text">Learn Math</span>
+        <div class="navbar-content">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-icon">AI</div>
+                    <span class="logo-text">AI Cloud Enterprises</span>
+                </div>
+                <div class="logo">
+                    <div class="logo-icon">II</div>
+                    <span class="logo-text">IISkills</span>
+                </div>
             </div>
             <div class="user-info">
-                <span id="userName"></span>
-                <a href="/trivia.html" class="logout-btn" style="display: inline-block; margin-right: 10px;">📚 Trivia</a>
-                <button id="logoutBtn" class="logout-btn">Logout</button>
+                <div class="user-avatar" id="userAvatar">P</div>
+                <span class="user-name" id="userName">phildass</span>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="hero-section">
-            <h1>Welcome to Learn Math</h1>
-            <p class="subtitle">Master mathematics through interactive lessons and practice</p>
-        </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Advanced Mathematics Tutorial Platform</h1>
+        <p>Master mathematics from fundamentals to advanced concepts</p>
+        <p>Comprehensive learning path designed for serious learners</p>
+        <p class="partnership">A collaboration between AI Cloud Enterprises & IISkills</p>
+    </section>
 
-        <div class="topics-grid">
-            <div class="topic-card" onclick="window.location.href='addition.html'">
-                <div class="topic-icon">➕</div>
-                <h2>Addition</h2>
-                <p>Learn and practice addition with interactive exercises</p>
-                <button class="start-btn">Start Learning</button>
+    <!-- Modules Container -->
+    <div class="modules-container">
+        <div class="modules-grid">
+            <!-- Module 1: Number Systems & Operations -->
+            <div class="module-card" onclick="openModule(1)">
+                <div class="module-number">1</div>
+                <h3>Number Systems & Operations</h3>
+                <p>Explore integers, rational numbers, real numbers, and complex numbers. Master fundamental operations and properties.</p>
+                <button class="module-btn">Start Learning</button>
             </div>
 
-            <div class="topic-card" onclick="window.location.href='subtraction.html'">
-                <div class="topic-icon">➖</div>
-                <h2>Subtraction</h2>
-                <p>Master subtraction through guided practice</p>
-                <button class="start-btn">Start Learning</button>
+            <!-- Module 2: Algebra Fundamentals -->
+            <div class="module-card" onclick="openModule(2)">
+                <div class="module-number">2</div>
+                <h3>Algebra Fundamentals</h3>
+                <p>Learn variables, expressions, equations, inequalities, and polynomial operations with practical applications.</p>
+                <button class="module-btn">Start Learning</button>
             </div>
 
-            <div class="topic-card" onclick="window.location.href='multiplication.html'">
-                <div class="topic-icon">✖️</div>
-                <h2>Multiplication</h2>
-                <p>Build multiplication skills with step-by-step lessons</p>
-                <button class="start-btn">Start Learning</button>
+            <!-- Module 3: Geometry Basics -->
+            <div class="module-card" onclick="openModule(3)">
+                <div class="module-number">3</div>
+                <h3>Geometry Basics</h3>
+                <p>Study points, lines, angles, triangles, circles, and polygons. Understand geometric theorems and proofs.</p>
+                <button class="module-btn">Start Learning</button>
             </div>
 
-            <div class="topic-card" onclick="window.location.href='division.html'">
-                <div class="topic-icon">➗</div>
-                <h2>Division</h2>
-                <p>Understand division concepts and practice problems</p>
-                <button class="start-btn">Start Learning</button>
+            <!-- Module 4: Trigonometry -->
+            <div class="module-card" onclick="openModule(4)">
+                <div class="module-number">4</div>
+                <h3>Trigonometry</h3>
+                <p>Master trigonometric ratios, identities, equations, and their applications in real-world problems.</p>
+                <button class="module-btn">Start Learning</button>
             </div>
-        </div>
 
-        <div class="features-section">
-            <h2>Why Learn Math?</h2>
-            <div class="features-grid">
-                <div class="feature">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Interactive Practice</h3>
-                    <p>Engage with hands-on exercises designed to reinforce learning</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">📊</div>
-                    <h3>Track Progress</h3>
-                    <p>Monitor your improvement with detailed statistics</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🏆</div>
-                    <h3>Achieve Goals</h3>
-                    <p>Set and reach milestones in your math journey</p>
-                </div>
+            <!-- Module 5: Calculus Introduction -->
+            <div class="module-card" onclick="openModule(5)">
+                <div class="module-number">5</div>
+                <h3>Calculus Introduction</h3>
+                <p>Understand limits, continuity, derivatives, and basic integration with practical examples.</p>
+                <button class="module-btn">Start Learning</button>
+            </div>
+
+            <!-- Module 6: Probability & Statistics -->
+            <div class="module-card" onclick="openModule(6)">
+                <div class="module-number">6</div>
+                <h3>Probability & Statistics</h3>
+                <p>Learn probability theory, statistical measures, distributions, and data analysis techniques.</p>
+                <button class="module-btn">Start Learning</button>
+            </div>
+
+            <!-- Module 7: Linear Algebra -->
+            <div class="module-card" onclick="openModule(7)">
+                <div class="module-number">7</div>
+                <h3>Linear Algebra</h3>
+                <p>Study vectors, matrices, determinants, eigenvalues, and linear transformations.</p>
+                <button class="module-btn">Start Learning</button>
+            </div>
+
+            <!-- Module 8: Advanced Calculus -->
+            <div class="module-card" onclick="openModule(8)">
+                <div class="module-number">8</div>
+                <h3>Advanced Calculus</h3>
+                <p>Explore multivariable calculus, partial derivatives, multiple integrals, and vector calculus.</p>
+                <button class="module-btn">Start Learning</button>
+            </div>
+
+            <!-- Module 9: Differential Equations -->
+            <div class="module-card" onclick="openModule(9)">
+                <div class="module-number">9</div>
+                <h3>Differential Equations</h3>
+                <p>Master ordinary differential equations, initial value problems, and solution techniques.</p>
+                <button class="module-btn">Start Learning</button>
+            </div>
+
+            <!-- Module 10: Number Theory -->
+            <div class="module-card" onclick="openModule(10)">
+                <div class="module-number">10</div>
+                <h3>Number Theory</h3>
+                <p>Dive into divisibility, prime numbers, modular arithmetic, and cryptographic applications.</p>
+                <button class="module-btn">Start Learning</button>
             </div>
         </div>
     </div>
 
-    <script type="module" src="app.js"></script>
+    <!-- Module Modal -->
+    <div id="moduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Module Title</h2>
+                <button class="close-btn" onclick="closeModule()">&times;</button>
+            </div>
+            <div class="lesson-content" id="lessonContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <button class="test-btn" onclick="openTest()">Take Module Test</button>
+        </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="testTitle">Module Test</h2>
+                <button class="close-btn" onclick="closeTest()">&times;</button>
+            </div>
+            <div id="testContent">
+                <!-- Test questions will be loaded dynamically -->
+            </div>
+            <button class="submit-test-btn" onclick="submitTest()">Submit Test</button>
+            <div id="testResult"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 AI Cloud Enterprises & IISkills - Advanced Mathematics Tutorial Platform</p>
+        <p>Empowering learners worldwide with quality education</p>
+    </footer>
+
+    <!-- Link to external JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
