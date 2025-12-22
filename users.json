@@ -1,0 +1,11 @@
+[
+  {
+    "id": "1766379469478",
+    "name": "Test User",
+    "dateOfBirth": "1990-01-01",
+    "email": "testuser@example.com",
+    "location": "New York",
+    "password": "$2b$10$YzVzoF17Sihh3PfglctXRusqPXlike9rSr9kD4WsZViuVl7OmjwQ.",
+    "createdAt": "2025-12-22T04:57:49.478Z"
+  }
+]
