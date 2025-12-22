@@ -236,9 +236,14 @@ app.get('/api/auth/status', (req, res) => {
     }
 });
 
-// Serve index.html for root
+// Serve index.html for root (public homepage)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve login page at /admin
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 // Start server

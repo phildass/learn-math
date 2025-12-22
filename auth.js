@@ -50,7 +50,7 @@ document.getElementById('loginFormElement').addEventListener('submit', async (e)
             sessionStorage.setItem('userName', data.user.name);
             sessionStorage.setItem('userEmail', data.user.email);
             
-            // Redirect to main page after short delay
+            // Redirect to main page (homepage) after short delay
             setTimeout(() => {
                 window.location.href = '/';
             }, 1000);

@@ -796,8 +796,26 @@ function closeModule() {
     document.getElementById('moduleModal').style.display = 'none';
 }
 
-// Start test
-function startTest(moduleNum) {
+// Start test - requires authentication
+async function startTest(moduleNum) {
+    // Check if user is authenticated before allowing test
+    try {
+        const response = await fetch('/api/auth/status');
+        const data = await response.json();
+        
+        if (!data.authenticated) {
+            // Not authenticated, redirect to admin login with message
+            alert('Please login to take tests and track your progress.');
+            window.location.href = '/admin';
+            return;
+        }
+    } catch (error) {
+        console.error('Authentication check error:', error);
+        alert('Please login to take tests.');
+        window.location.href = '/admin';
+        return;
+    }
+    
     closeModule();
     currentModule = moduleNum;
     currentQuestion = 0;
@@ -934,28 +952,49 @@ window.onclick = function(event) {
 }
 
 // Authentication functions
-async function checkAuthentication() {
+async function updateNavbar() {
     try {
         const response = await fetch('/api/auth/status');
         const data = await response.json();
         
-        if (!data.authenticated) {
-            // Not authenticated, redirect to login
-            window.location.href = '/login.html';
-            return false;
-        }
-        
-        // Update navbar with user info
         const userNameEl = document.getElementById('userName');
-        if (userNameEl && data.user) {
-            userNameEl.textContent = `Welcome, ${data.user.name}!`;
-        }
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginBtn = document.getElementById('loginBtn');
         
-        return true;
+        if (data.authenticated) {
+            // User is logged in - show welcome message and logout button
+            if (userNameEl) {
+                userNameEl.textContent = `Welcome, ${data.user.name}!`;
+                userNameEl.style.display = 'inline';
+            }
+            if (logoutBtn) {
+                logoutBtn.style.display = 'inline-block';
+            }
+            if (loginBtn) {
+                loginBtn.style.display = 'none';
+            }
+        } else {
+            // User is not logged in - show login button
+            if (userNameEl) {
+                userNameEl.style.display = 'none';
+            }
+            if (logoutBtn) {
+                logoutBtn.style.display = 'none';
+            }
+            if (loginBtn) {
+                loginBtn.style.display = 'inline-block';
+            }
+        }
     } catch (error) {
-        console.error('Authentication check error:', error);
-        window.location.href = '/login.html';
-        return false;
+        console.error('Error updating navbar:', error);
+        // On error, show login button
+        const userNameEl = document.getElementById('userName');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        if (userNameEl) userNameEl.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (loginBtn) loginBtn.style.display = 'inline-block';
     }
 }
 
@@ -971,18 +1010,18 @@ async function handleLogout() {
             // Clear session storage
             sessionStorage.clear();
             
-            // Redirect to login page
-            window.location.href = '/login.html';
+            // Reload page to update navbar
+            window.location.reload();
         }
     } catch (error) {
         console.error('Logout error:', error);
-        // Still redirect to login on error
-        window.location.href = '/login.html';
+        // Still reload page on error
+        window.location.reload();
     }
 }
 
-// Check authentication on page load
+// Update navbar on page load
 window.addEventListener('DOMContentLoaded', () => {
-    checkAuthentication();
+    updateNavbar();
 });
 
