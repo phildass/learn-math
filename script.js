@@ -986,16 +986,20 @@ async function checkAuthentication() {
             if (loginBtn) {
                 loginBtn.style.display = 'inline-block';
                 // Update login button to redirect to IIS Skills Cloud
-                loginBtn.onclick = () => {
+                loginBtn.removeEventListener('click', loginBtn._iisRedirectHandler);
+                loginBtn._iisRedirectHandler = () => {
                     window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
                 };
+                loginBtn.addEventListener('click', loginBtn._iisRedirectHandler);
             }
             if (signupBtn) {
                 signupBtn.style.display = 'inline-block';
                 // Update signup button to redirect to IIS Skills Cloud
-                signupBtn.onclick = () => {
+                signupBtn.removeEventListener('click', signupBtn._iisRedirectHandler);
+                signupBtn._iisRedirectHandler = () => {
                     window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
                 };
+                signupBtn.addEventListener('click', signupBtn._iisRedirectHandler);
             }
             
             // Show authentication message
