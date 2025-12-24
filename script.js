@@ -802,9 +802,9 @@ function startTest(moduleNum) {
     // Check if user is authenticated before allowing test
     checkAuthenticationForTest().then(isAuthenticated => {
         if (!isAuthenticated) {
-            // Show login prompt
-            if (confirm('Please sign up or login to take tests. Would you like to go to the login page?')) {
-                window.location.href = '/login';
+            // Redirect to IIS Skills Cloud for authentication
+            if (confirm('You must be authenticated to take tests. You will be redirected to IIS Skills Cloud to sign in or register. Continue?')) {
+                window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
             }
             return;
         }
@@ -954,6 +954,10 @@ window.onclick = function(event) {
 }
 
 // Authentication functions
+// NOTE: Local authentication has been disabled
+// All authentication is now handled through IIS Skills Cloud
+const IIS_SKILLS_CLOUD_AUTH_URL = 'https://iiskills.cloud/register';
+
 async function checkAuthentication() {
     try {
         const response = await fetch('/api/auth/status');
@@ -974,17 +978,75 @@ async function checkAuthentication() {
             if (signupBtn) signupBtn.style.display = 'none';
             return true;
         } else {
-            // Not authenticated - show login/signup buttons
-            if (userNameEl) userNameEl.textContent = '';
+            // Not authenticated - redirect to IIS Skills Cloud
+            if (userNameEl) {
+                userNameEl.textContent = 'Not Authenticated';
+            }
             if (logoutBtn) logoutBtn.style.display = 'none';
-            if (loginBtn) loginBtn.style.display = 'inline-block';
-            if (signupBtn) signupBtn.style.display = 'inline-block';
+            if (loginBtn) {
+                loginBtn.style.display = 'inline-block';
+                // Update login button to redirect to IIS Skills Cloud
+                loginBtn.removeEventListener('click', loginBtn._iisRedirectHandler);
+                loginBtn._iisRedirectHandler = () => {
+                    window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
+                };
+                loginBtn.addEventListener('click', loginBtn._iisRedirectHandler);
+            }
+            if (signupBtn) {
+                signupBtn.style.display = 'inline-block';
+                // Update signup button to redirect to IIS Skills Cloud
+                signupBtn.removeEventListener('click', signupBtn._iisRedirectHandler);
+                signupBtn._iisRedirectHandler = () => {
+                    window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
+                };
+                signupBtn.addEventListener('click', signupBtn._iisRedirectHandler);
+            }
+            
+            // Show authentication message
+            showAuthenticationMessage();
             return false;
         }
     } catch (error) {
         console.error('Authentication check error:', error);
         return false;
     }
+}
+
+function showAuthenticationMessage() {
+    // Create and display a message prompting user to authenticate via IIS Skills Cloud
+    const existingMessage = document.getElementById('auth-message-banner');
+    if (existingMessage) return; // Already showing
+    
+    const banner = document.createElement('div');
+    banner.id = 'auth-message-banner';
+    banner.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        z-index: 9999;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    `;
+    
+    banner.innerHTML = `
+        <strong>🔐 Authentication Required</strong>
+        <p style="margin: 5px 0;">
+            To access protected content, please sign in through IIS Skills Cloud.
+            <a href="${IIS_SKILLS_CLOUD_AUTH_URL}" 
+               style="color: #fff; text-decoration: underline; font-weight: 600; margin-left: 10px;">
+                Sign In / Register Here
+            </a>
+        </p>
+    `;
+    
+    document.body.insertBefore(banner, document.body.firstChild);
+    
+    // Adjust body padding to account for banner
+    document.body.style.paddingTop = '80px';
 }
 
 async function checkAuthenticationForTest() {
@@ -1037,13 +1099,14 @@ async function handleLogout() {
             // Clear session storage
             sessionStorage.clear();
             
-            // Redirect to login page
-            window.location.href = '/login.html';
+            // Redirect to IIS Skills Cloud (or show message)
+            alert('You have been logged out. Please use IIS Skills Cloud to sign in again.');
+            window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
         }
     } catch (error) {
         console.error('Logout error:', error);
-        // Still redirect to login on error
-        window.location.href = '/login.html';
+        // Still redirect to IIS Skills Cloud on error
+        window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
     }
 }
 

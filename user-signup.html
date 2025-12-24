@@ -4,40 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Learn Math</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .signup-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .signup-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul {
+            color: #555;
+            line-height: 1.8;
+            margin-left: 20px;
+        }
+
+        .btn-register {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-register:hover {
+            background: linear-gradient(135deg, #2980b9, #1f6fa6);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">
-                <img src="/public/images/logo-aicloud.png" alt="AI Cloud Logo">
+                <span>Learn Math</span>
             </div>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="user-login.html">User Login</a></li>
-                <li><a href="user-signup.html">Sign Up</a></li>
+                <li><a href="user-login.html">Login</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <section class="signup-form">
-            <h2>Create Your Account</h2>
-            <form>
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="signup-email">Email:</label>
-                <input type="email" id="signup-email" name="signup-email" required>
-                <label for="signup-password">Password:</label>
-                <input type="password" id="signup-password" name="signup-password" required>
-                <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
-                <button type="submit">Sign Up</button>
-            </form>
-            <p>Already have an account? <a href="user-login.html">Login here</a></p>
-        </section>
+        <div class="signup-container">
+            <div class="signup-header">
+                <h2>Create Your Account</h2>
+                <p>Join the IIS Skills Cloud community</p>
+            </div>
+
+            <div class="info-box">
+                <h3>🔐 Centralized Registration</h3>
+                <p>
+                    Account registration is now handled through <strong>IIS Skills Cloud</strong> 
+                    centralized authentication system. This provides you with:
+                </p>
+                <ul>
+                    <li>Single account across all IIS Skills Cloud applications</li>
+                    <li>Enhanced security and data protection</li>
+                    <li>Simplified account management</li>
+                    <li>Unified profile and preferences</li>
+                </ul>
+            </div>
+
+            <a href="https://iiskills.cloud/register" class="btn-register">
+                🚀 Register at IIS Skills Cloud
+            </a>
+
+            <div style="text-align: center; margin-top: 25px; font-size: 14px; color: #7f8c8d;">
+                Already have an account? <a href="user-login.html" style="color: #3498db; text-decoration: none; font-weight: 600;">Sign in here</a>
+            </div>
+        </div>
     </main>
     <footer>
         <p>&copy; 2025 Learn Math. All rights reserved.</p>
     </footer>
+
+    <script>
+        // All local registration has been disabled
+        // Users must register through IIS Skills Cloud centralized authentication
+        
+        // TODO: Implement SSO integration with IIS Skills Cloud
+        // This will include OAuth/SAML authentication flow
+    </script>
 </body>
 </html>

@@ -1,121 +1,58 @@
-// Toggle between login and register forms
-function showRegisterForm() {
-    document.getElementById('loginForm').classList.add('hidden');
-    document.getElementById('registerForm').classList.remove('hidden');
-    clearMessages();
-}
+// IIS Skills Cloud Centralized Authentication
+// All local authentication has been disabled
+// Users must authenticate through https://iiskills.cloud/register
 
-function showLoginForm() {
-    document.getElementById('registerForm').classList.add('hidden');
-    document.getElementById('loginForm').classList.remove('hidden');
-    clearMessages();
-}
+// TODO: Implement SSO integration with IIS Skills Cloud
+// This will replace the current redirect-based approach with proper OAuth/SAML flow
 
-function clearMessages() {
-    document.getElementById('loginMessage').classList.remove('show', 'success', 'error');
-    document.getElementById('registerMessage').classList.remove('show', 'success', 'error');
-}
+const IIS_SKILLS_CLOUD_AUTH_URL = 'https://iiskills.cloud/register';
 
 function showMessage(elementId, message, type) {
     const messageEl = document.getElementById(elementId);
+    if (!messageEl) return;
+    
     messageEl.textContent = message;
     messageEl.className = `message ${type} show`;
 }
 
-// Handle login form submission
-document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
-    e.preventDefault();
+// Redirect users to IIS Skills Cloud for authentication
+function redirectToIISSkillsCloud() {
+    // Store the current page URL to return after authentication (for future SSO)
+    sessionStorage.setItem('returnUrl', window.location.href);
     
-    const formData = {
-        email: document.getElementById('loginEmail').value,
-        password: document.getElementById('loginPassword').value
-    };
+    // Redirect to IIS Skills Cloud authentication
+    window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
+}
 
-    try {
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            showMessage('loginMessage', data.message, 'success');
-            
-            // Store user info in sessionStorage
-            sessionStorage.setItem('isAuthenticated', 'true');
-            sessionStorage.setItem('userName', data.user.name);
-            sessionStorage.setItem('userEmail', data.user.email);
-            
-            // Redirect to main page after short delay
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 1000);
-        } else {
-            showMessage('loginMessage', data.message, 'error');
-        }
-    } catch (error) {
-        showMessage('loginMessage', 'Network error. Please try again.', 'error');
-        console.error('Login error:', error);
-    }
-});
-
-// Handle register form submission
-document.getElementById('registerFormElement').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-        name: document.getElementById('registerName').value,
-        dateOfBirth: document.getElementById('registerDob').value,
-        email: document.getElementById('registerEmail').value,
-        location: document.getElementById('registerLocation').value,
-        password: document.getElementById('registerPassword').value
-    };
-
-    try {
-        const response = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            showMessage('registerMessage', data.message, 'success');
-            
-            // Clear form
-            document.getElementById('registerFormElement').reset();
-            
-            // Switch to login form after short delay
-            setTimeout(() => {
-                showLoginForm();
-            }, 2000);
-        } else {
-            showMessage('registerMessage', data.message, 'error');
-        }
-    } catch (error) {
-        showMessage('registerMessage', 'Network error. Please try again.', 'error');
-        console.error('Registration error:', error);
-    }
-});
-
-// Check if already logged in when page loads
-window.addEventListener('DOMContentLoaded', async () => {
+// Check authentication status - for future SSO integration
+async function checkAuthStatus() {
     try {
         const response = await fetch('/api/auth/status');
         const data = await response.json();
-        
-        if (data.authenticated) {
-            // User is already logged in, redirect to main page
-            window.location.href = '/';
-        }
+        return data.authenticated;
     } catch (error) {
         console.error('Error checking auth status:', error);
+        return false;
     }
+}
+
+// Handle any remaining form submissions by redirecting to IIS Skills Cloud
+document.addEventListener('DOMContentLoaded', () => {
+    // Find any login or register forms and prevent submission
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Local authentication is disabled. Redirecting to IIS Skills Cloud...');
+            redirectToIISSkillsCloud();
+        });
+    });
+    
+    // Check if already authenticated
+    checkAuthStatus().then(authenticated => {
+        if (authenticated) {
+            // User is authenticated, redirect to main page
+            window.location.href = '/';
+        }
+    });
 });
