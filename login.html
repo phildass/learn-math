@@ -4,35 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Learn Math</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .btn-login {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #2980b9, #1f6fa6);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">
-                <img src="/public/images/logo-aicloud.png" alt="AI Cloud Logo">
+                <span>Learn Math</span>
             </div>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="user-login.html">User Login</a></li>
-                <li><a href="admin-login.html">Admin Login</a></li>
+                <li><a href="user-login.html">Login</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <section class="login-form">
-            <h2>Login</h2>
-            <form>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit">Login</button>
-            </form>
-        </section>
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Authentication Required</h2>
+                <p>Please sign in through IIS Skills Cloud</p>
+            </div>
+
+            <div class="info-box">
+                <h3>🔐 Centralized Authentication</h3>
+                <p>
+                    This application now uses <strong>IIS Skills Cloud</strong> centralized authentication. 
+                    All user accounts are managed through our central portal for enhanced security and convenience.
+                </p>
+                <p>
+                    To access this application, please sign in or create an account at IIS Skills Cloud.
+                </p>
+            </div>
+
+            <a href="https://iiskills.cloud/register" class="btn-login">
+                🚀 Sign In / Register at IIS Skills Cloud
+            </a>
+        </div>
     </main>
     <footer>
         <p>&copy; 2025 Learn Math. All rights reserved.</p>
     </footer>
+
+    <script>
+        // All local authentication has been disabled
+        // Users must authenticate through IIS Skills Cloud centralized authentication
+        
+        // TODO: Implement SSO integration with IIS Skills Cloud
+    </script>
 </body>
 </html>

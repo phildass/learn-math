@@ -120,141 +120,28 @@ function isAuthenticated(req, res, next) {
 }
 
 // API Routes
-// Note: For production deployment, add rate limiting middleware to prevent brute force attacks
-// Example: npm install express-rate-limit
+// Note: Local registration and login have been disabled.
+// All user authentication is now handled through IIS Skills Cloud centralized authentication.
+// Future: This will be replaced with SSO integration from IIS Skills Cloud
 
-// Register endpoint
+// Register endpoint - DISABLED - Redirect to IIS Skills Cloud
 app.post('/api/register', async (req, res) => {
-    try {
-        const { name, dateOfBirth, email, location, password } = req.body;
-
-        // Validate required fields
-        if (!name || !dateOfBirth || !email || !location || !password) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'All fields are required' 
-            });
-        }
-
-        // Sanitize inputs
-        const sanitizedName = sanitizeInput(name);
-        const sanitizedEmail = sanitizeInput(email);
-        const sanitizedLocation = sanitizeInput(location);
-
-        // Validate email format
-        if (!validateEmail(sanitizedEmail)) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid email format' 
-            });
-        }
-
-        // Check password length
-        if (password.length < 6) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Password must be at least 6 characters long' 
-            });
-        }
-
-        const users = readUsers();
-
-        // Check if email already exists
-        if (users.find(u => u.email === sanitizedEmail)) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Email already registered' 
-            });
-        }
-
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create new user
-        const newUser = {
-            id: Date.now().toString(),
-            name: sanitizedName,
-            dateOfBirth,
-            email: sanitizedEmail,
-            location: sanitizedLocation,
-            password: hashedPassword,
-            role: 'user',
-            createdAt: new Date().toISOString(),
-            testResults: [],
-            completedModules: []
-        };
-
-        users.push(newUser);
-        writeUsers(users);
-
-        res.json({ 
-            success: true, 
-            message: 'Registration successful! Please login.' 
-        });
-    } catch (error) {
-        console.error('Registration error:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Server error during registration' 
-        });
-    }
+    // Local registration is disabled - all users must register through IIS Skills Cloud
+    res.status(403).json({ 
+        success: false, 
+        message: 'Local registration is disabled. Please register at IIS Skills Cloud.',
+        redirectUrl: 'https://iiskills.cloud/register'
+    });
 });
 
-// Login endpoint
+// Login endpoint - DISABLED - Redirect to IIS Skills Cloud
 app.post('/api/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Email and password are required' 
-            });
-        }
-
-        const sanitizedEmail = sanitizeInput(email);
-        const users = readUsers();
-        const user = users.find(u => u.email === sanitizedEmail);
-
-        if (!user) {
-            return res.status(401).json({ 
-                success: false, 
-                message: 'Invalid email or password' 
-            });
-        }
-
-        // Verify password
-        const isValidPassword = await bcrypt.compare(password, user.password);
-        
-        if (!isValidPassword) {
-            return res.status(401).json({ 
-                success: false, 
-                message: 'Invalid email or password' 
-            });
-        }
-
-        // Set session
-        req.session.userId = user.id;
-        req.session.userName = user.name;
-        req.session.userEmail = user.email;
-        req.session.userRole = user.role || 'user';
-
-        res.json({ 
-            success: true, 
-            message: 'Login successful',
-            user: {
-                name: user.name,
-                email: user.email,
-                role: user.role || 'user'
-            }
-        });
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Server error during login' 
-        });
-    }
+    // Local login is disabled - all users must authenticate through IIS Skills Cloud
+    res.status(403).json({ 
+        success: false, 
+        message: 'Local login is disabled. Please sign in at IIS Skills Cloud.',
+        redirectUrl: 'https://iiskills.cloud/register'
+    });
 });
 
 // Logout endpoint
