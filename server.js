@@ -124,22 +124,22 @@ function isAuthenticated(req, res, next) {
 // All user authentication handled centrally through iiskills.cloud
 // Future: This will be replaced with SSO integration from iiskills.cloud
 
-// Register endpoint - DISABLED - Redirect to IIS Skills Cloud
+// Register endpoint - DISABLED - Redirect to iiskills.cloud
 app.post('/api/register', async (req, res) => {
-    // Local registration is disabled - all users must register through IIS Skills Cloud
+    // Local registration is disabled - all users must register through iiskills.cloud
     res.status(403).json({ 
         success: false, 
-        message: 'Local registration is disabled. Please register at IIS Skills Cloud.',
+        message: 'Local registration is disabled. Please register at iiskills.cloud.',
         redirectUrl: 'https://iiskills.cloud/register'
     });
 });
 
-// Login endpoint - DISABLED - Redirect to IIS Skills Cloud
+// Login endpoint - DISABLED - Redirect to iiskills.cloud
 app.post('/api/login', async (req, res) => {
-    // Local login is disabled - all users must authenticate through IIS Skills Cloud
+    // Local login is disabled - all users must authenticate through iiskills.cloud
     res.status(403).json({ 
         success: false, 
-        message: 'Local login is disabled. Please sign in at IIS Skills Cloud.',
+        message: 'Local login is disabled. Please sign in at iiskills.cloud.',
         redirectUrl: 'https://iiskills.cloud/register'
     });
 });

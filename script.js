@@ -802,8 +802,8 @@ function startTest(moduleNum) {
     // Check if user is authenticated before allowing test
     checkAuthenticationForTest().then(isAuthenticated => {
         if (!isAuthenticated) {
-            // Redirect to IIS Skills Cloud for authentication
-            if (confirm('You must be authenticated to take tests. You will be redirected to IIS Skills Cloud to sign in or register. Continue?')) {
+            // Redirect to iiskills.cloud for authentication
+            if (confirm('You must be authenticated to take tests. You will be redirected to iiskills.cloud to sign in or register. Continue?')) {
                 window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
             }
             return;
@@ -978,14 +978,14 @@ async function checkAuthentication() {
             if (signupBtn) signupBtn.style.display = 'none';
             return true;
         } else {
-            // Not authenticated - redirect to IIS Skills Cloud
+            // Not authenticated - redirect to iiskills.cloud
             if (userNameEl) {
                 userNameEl.textContent = 'Not Authenticated';
             }
             if (logoutBtn) logoutBtn.style.display = 'none';
             if (loginBtn) {
                 loginBtn.style.display = 'inline-block';
-                // Update login button to redirect to IIS Skills Cloud
+                // Update login button to redirect to iiskills.cloud
                 loginBtn.removeEventListener('click', loginBtn._iisRedirectHandler);
                 loginBtn._iisRedirectHandler = () => {
                     window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
@@ -994,7 +994,7 @@ async function checkAuthentication() {
             }
             if (signupBtn) {
                 signupBtn.style.display = 'inline-block';
-                // Update signup button to redirect to IIS Skills Cloud
+                // Update signup button to redirect to iiskills.cloud
                 signupBtn.removeEventListener('click', signupBtn._iisRedirectHandler);
                 signupBtn._iisRedirectHandler = () => {
                     window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
@@ -1013,7 +1013,7 @@ async function checkAuthentication() {
 }
 
 function showAuthenticationMessage() {
-    // Create and display a message prompting user to authenticate via IIS Skills Cloud
+    // Create and display a message prompting user to authenticate via iiskills.cloud
     const existingMessage = document.getElementById('auth-message-banner');
     if (existingMessage) return; // Already showing
     
@@ -1035,7 +1035,7 @@ function showAuthenticationMessage() {
     banner.innerHTML = `
         <strong>🔐 Authentication Required</strong>
         <p style="margin: 5px 0;">
-            To access protected content, please sign in through IIS Skills Cloud.
+            To access protected content, please sign in through iiskills.cloud.
             <a href="${IIS_SKILLS_CLOUD_AUTH_URL}" 
                style="color: #fff; text-decoration: underline; font-weight: 600; margin-left: 10px;">
                 Sign In / Register Here
@@ -1099,13 +1099,13 @@ async function handleLogout() {
             // Clear session storage
             sessionStorage.clear();
             
-            // Redirect to IIS Skills Cloud (or show message)
-            alert('You have been logged out. Please use IIS Skills Cloud to sign in again.');
+            // Redirect to iiskills.cloud (or show message)
+            alert('You have been logged out. Please use iiskills.cloud to sign in again.');
             window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
         }
     } catch (error) {
         console.error('Logout error:', error);
-        // Still redirect to IIS Skills Cloud on error
+        // Still redirect to iiskills.cloud on error
         window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
     }
 }

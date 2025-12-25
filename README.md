@@ -4,7 +4,7 @@ Learn the basics of math with ease through our comprehensive 10-module course co
 
 ## Features
 
-- **Centralized IIS Skills Cloud Authentication**: Secure authentication through IIS Skills Cloud central portal
+- **Centralized iiskills.cloud Authentication**: Secure authentication through iiskills.cloud central portal
 - **10 Comprehensive Modules**: Each with detailed lessons, examples, and fun facts
 - **Interactive Testing**: Test your knowledge with quizzes for each module (requires authentication)
 - **Session Management**: Authentication persists across page refreshes
@@ -48,15 +48,15 @@ The application will be running on port 3000 by default.
 
 ### Authentication
 
-**All users must authenticate through IIS Skills Cloud:**
+**All users must authenticate through iiskills.cloud:**
 
 1. Visit the Learn Math application at your deployment URL
-2. If not authenticated, you will be prompted to sign in through IIS Skills Cloud
+2. If not authenticated, you will be prompted to sign in through iiskills.cloud
 3. Click on the provided link to be redirected to https://iiskills.cloud/register
-4. Sign in with your existing IIS Skills Cloud account or create a new one
-5. After authentication on IIS Skills Cloud, you can access the Learn Math application
+4. Sign in with your existing iiskills.cloud account or create a new one
+5. After authentication on iiskills.cloud, you can access the Learn Math application
 
-**Note:** Local registration and login have been disabled. All user account management is handled centrally through IIS Skills Cloud for enhanced security and unified user experience.
+**Note:** Local registration and login have been disabled. All user account management is handled centrally through iiskills.cloud for enhanced security and unified user experience.
 
 ### Accessing Content
 
@@ -66,7 +66,7 @@ The application will be running on port 3000 by default.
 
 ### Logout
 
-Click the "Logout" button to end your session. You will be redirected to IIS Skills Cloud.
+Click the "Logout" button to end your session. You will be redirected to iiskills.cloud.
 
 ## Project Structure
 
@@ -88,8 +88,8 @@ learn-math/
 
 ### Authentication Endpoints (Modified)
 
-- `POST /api/register` - **DISABLED** - Returns redirect URL to IIS Skills Cloud
-- `POST /api/login` - **DISABLED** - Returns redirect URL to IIS Skills Cloud
+- `POST /api/register` - **DISABLED** - Returns redirect URL to iiskills.cloud
+- `POST /api/login` - **DISABLED** - Returns redirect URL to iiskills.cloud
 - `POST /api/logout` - Logout current user session
 - `GET /api/auth/status` - Check authentication status
 
@@ -113,13 +113,13 @@ All endpoints below require authentication:
 - **Session Management**: Secure session handling with express-session
 - **Protected Routes**: Tutorial content and tests only accessible after authentication
 - **Input Sanitization**: All user inputs are sanitized to prevent XSS attacks
-- **SSO Ready**: Prepared for OAuth/SAML integration with IIS Skills Cloud
+- **SSO Ready**: Prepared for OAuth/SAML integration with iiskills.cloud
 
 ### Future SSO Integration
 
-The application is prepared for future integration with IIS Skills Cloud Single Sign-On (SSO):
+The application is prepared for future integration with iiskills.cloud Single Sign-On (SSO):
 - OAuth 2.0 / SAML authentication flow
-- Automatic user provisioning from IIS Skills Cloud
+- Automatic user provisioning from iiskills.cloud
 - Role-based access control (RBAC) from central identity provider
 - Token-based authentication for API access
 
