@@ -93,7 +93,7 @@ learn-math/
 - `POST /api/logout` - Logout current user session
 - `GET /api/auth/status` - Check authentication status
 
-**Note:** Local registration and login endpoints have been disabled. All authentication must go through IIS Skills Cloud centralized authentication system.
+**Note:** Local registration and login endpoints have been disabled. All authentication handled centrally through iiskills.cloud.
 
 ### Protected Endpoints
 
@@ -108,7 +108,7 @@ All endpoints below require authentication:
 
 ## Security Features
 
-- **Centralized Authentication**: All authentication handled through IIS Skills Cloud
+- **Centralized Authentication**: All authentication handled centrally through iiskills.cloud
 - **No Local Password Storage**: Passwords managed centrally for enhanced security
 - **Session Management**: Secure session handling with express-session
 - **Protected Routes**: Tutorial content and tests only accessible after authentication
