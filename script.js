@@ -955,7 +955,7 @@ window.onclick = function(event) {
 
 // Authentication functions
 // NOTE: Local authentication has been disabled
-// All authentication is now handled through IIS Skills Cloud
+// All authentication handled centrally through iiskills.cloud
 const IIS_SKILLS_CLOUD_AUTH_URL = 'https://iiskills.cloud/register';
 
 async function checkAuthentication() {

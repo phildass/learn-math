@@ -121,8 +121,8 @@ function isAuthenticated(req, res, next) {
 
 // API Routes
 // Note: Local registration and login have been disabled.
-// All user authentication is now handled through IIS Skills Cloud centralized authentication.
-// Future: This will be replaced with SSO integration from IIS Skills Cloud
+// All user authentication handled centrally through iiskills.cloud
+// Future: This will be replaced with SSO integration from iiskills.cloud
 
 // Register endpoint - DISABLED - Redirect to IIS Skills Cloud
 app.post('/api/register', async (req, res) => {
