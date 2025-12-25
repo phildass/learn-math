@@ -1,8 +1,8 @@
-// IIS Skills Cloud Centralized Authentication
+// iiskills.cloud Centralized Authentication
 // All local authentication has been disabled
 // Users must authenticate through https://iiskills.cloud/register
 
-// TODO: Implement SSO integration with IIS Skills Cloud
+// TODO: Implement SSO integration with iiskills.cloud
 // This will replace the current redirect-based approach with proper OAuth/SAML flow
 
 const IIS_SKILLS_CLOUD_AUTH_URL = 'https://iiskills.cloud/register';
@@ -15,12 +15,12 @@ function showMessage(elementId, message, type) {
     messageEl.className = `message ${type} show`;
 }
 
-// Redirect users to IIS Skills Cloud for authentication
+// Redirect users to iiskills.cloud for authentication
 function redirectToIISSkillsCloud() {
     // Store the current page URL to return after authentication (for future SSO)
     sessionStorage.setItem('returnUrl', window.location.href);
     
-    // Redirect to IIS Skills Cloud authentication
+    // Redirect to iiskills.cloud authentication
     window.location.href = IIS_SKILLS_CLOUD_AUTH_URL;
 }
 
@@ -36,14 +36,14 @@ async function checkAuthStatus() {
     }
 }
 
-// Handle any remaining form submissions by redirecting to IIS Skills Cloud
+// Handle any remaining form submissions by redirecting to iiskills.cloud
 document.addEventListener('DOMContentLoaded', () => {
     // Find any login or register forms and prevent submission
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Local authentication is disabled. Redirecting to IIS Skills Cloud...');
+            alert('Local authentication is disabled. Redirecting to iiskills.cloud...');
             redirectToIISSkillsCloud();
         });
     });
