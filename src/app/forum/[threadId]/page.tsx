@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState, useCallback } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -21,29 +21,22 @@ interface Thread {
   created_at: string
 }
 
+interface User {
+  id: string
+  email?: string
+}
+
 export default function ThreadPage() {
   const params = useParams()
-  const router = useRouter()
   const threadId = params.threadId as string
 
   const [thread, setThread] = useState<Thread | null>(null)
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [newPostContent, setNewPostContent] = useState('')
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
 
-  useEffect(() => {
-    checkUser()
-    loadThread()
-    loadPosts()
-  }, [threadId])
-
-  const checkUser = async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-    setUser(session?.user)
-  }
-
-  const loadThread = async () => {
+  const loadThread = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('forum_threads')
@@ -60,14 +53,15 @@ export default function ThreadPage() {
         ...data,
         author_name: data.profiles?.full_name || 'Unknown',
       })
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       console.error('Error loading thread:', error)
     } finally {
       setLoading(false)
     }
-  }
+  }, [threadId])
 
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('forum_posts')
@@ -86,10 +80,22 @@ export default function ThreadPage() {
           author_name: post.profiles?.full_name || 'Unknown',
         }))
       )
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       console.error('Error loading posts:', error)
     }
-  }
+  }, [threadId])
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
+    }
+    
+    checkUser()
+    loadThread()
+    loadPosts()
+  }, [loadThread, loadPosts])
 
   const handleSubmitPost = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -112,7 +118,8 @@ export default function ThreadPage() {
 
       setNewPostContent('')
       loadPosts()
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       alert('Failed to post: ' + error.message)
     }
   }

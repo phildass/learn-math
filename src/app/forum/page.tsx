@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
@@ -14,6 +14,11 @@ interface Thread {
   post_count?: number
 }
 
+interface User {
+  id: string
+  email?: string
+}
+
 export default function ForumPage() {
   const router = useRouter()
   const [threads, setThreads] = useState<Thread[]>([])
@@ -21,19 +26,9 @@ export default function ForumPage() {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [newThreadTitle, setNewThreadTitle] = useState('')
   const [newThreadContent, setNewThreadContent] = useState('')
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
 
-  useEffect(() => {
-    checkUser()
-    loadThreads()
-  }, [])
-
-  const checkUser = async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-    setUser(session?.user)
-  }
-
-  const loadThreads = async () => {
+  const loadThreads = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('forum_threads')
@@ -62,12 +57,23 @@ export default function ForumPage() {
       )
 
       setThreads(threadsWithCounts)
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       console.error('Error loading threads:', error)
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
+    }
+    
+    checkUser()
+    loadThreads()
+  }, [loadThreads])
 
   const handleCreateThread = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -110,7 +116,8 @@ export default function ForumPage() {
       setNewThreadContent('')
       loadThreads()
       router.push(`/forum/${thread.id}`)
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       alert('Failed to create thread: ' + error.message)
     }
   }

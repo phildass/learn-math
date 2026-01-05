@@ -30,7 +30,8 @@ export default function AdminPage() {
       if (error) throw error
 
       setUsers(data || [])
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       setError(error.message)
     } finally {
       setLoading(false)
@@ -48,7 +49,8 @@ export default function AdminPage() {
 
       // Reload users
       loadUsers()
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       alert('Failed to update role: ' + error.message)
     }
   }

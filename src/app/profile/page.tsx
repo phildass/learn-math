@@ -3,9 +3,21 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 
+interface User {
+  id: string
+  email?: string
+}
+
+interface Profile {
+  id: string
+  full_name: string
+  role: string
+  created_at: string
+}
+
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null)
-  const [profile, setProfile] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [fullName, setFullName] = useState('')
   const [saving, setSaving] = useState(false)
@@ -31,7 +43,8 @@ export default function ProfilePage() {
 
       setProfile(data)
       setFullName(data?.full_name || '')
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       console.error('Error loading profile:', error)
     } finally {
       setLoading(false)
@@ -42,6 +55,8 @@ export default function ProfilePage() {
     e.preventDefault()
     setSaving(true)
 
+    if (!user) return
+
     try {
       const { error } = await supabase
         .from('profiles')
@@ -51,7 +66,8 @@ export default function ProfilePage() {
       if (error) throw error
 
       alert('Profile updated successfully!')
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as Error
       alert('Failed to update profile: ' + error.message)
     } finally {
       setSaving(false)
