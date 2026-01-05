@@ -5,7 +5,13 @@
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID REFERENCES auth.users(id) PRIMARY KEY,
   full_name TEXT,
+  email TEXT,
   role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+  onboarding_completed BOOLEAN DEFAULT false,
+  onboarding_level TEXT,
+  onboarding_interests TEXT[],
+  onboarding_goals TEXT[],
+  onboarding_experience TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -25,6 +31,16 @@ CREATE POLICY "Users can insert their own profile"
 CREATE POLICY "Users can update own profile"
   ON profiles FOR UPDATE
   USING (auth.uid() = id);
+
+-- Admin can update any profile (for role management)
+CREATE POLICY "Admins can update any profile"
+  ON profiles FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
+    )
+  );
 
 -- Create forum_threads table
 CREATE TABLE IF NOT EXISTS forum_threads (
@@ -104,3 +120,5 @@ CREATE INDEX IF NOT EXISTS forum_threads_created_at_idx ON forum_threads(created
 CREATE INDEX IF NOT EXISTS forum_posts_thread_id_idx ON forum_posts(thread_id);
 CREATE INDEX IF NOT EXISTS forum_posts_author_idx ON forum_posts(author);
 CREATE INDEX IF NOT EXISTS forum_posts_created_at_idx ON forum_posts(created_at);
+CREATE INDEX IF NOT EXISTS profiles_role_idx ON profiles(role);
+CREATE INDEX IF NOT EXISTS profiles_onboarding_idx ON profiles(onboarding_completed);
