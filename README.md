@@ -1,26 +1,63 @@
 # Learn Math - iiskills.cloud Platform
 
-**Advanced Mathematics Tutorial Platform** - Part of the iiskills.cloud ecosystem
+**AI-Powered Mathematics Education Platform** - Part of the iiskills.cloud ecosystem
 
-A modern, production-ready mathematics learning platform built with Next.js, React, and Supabase, featuring comprehensive authentication, role-based access control, and community forum.
+A production-ready mathematics learning platform built with Next.js, React, TypeScript, and Supabase. Featuring comprehensive Supabase-only authentication, advanced RBAC, AI-generated curriculum aligned with Indian academic standards, and full feature parity with other iiskills-cloud domains.
 
-## Features
+## 🌟 Platform Alignment
 
-- **Supabase Authentication**: Secure, scalable authentication with email/password
-- **Role-Based Access Control (RBAC)**: Admin and user roles with protected routes
-- **Admin Dashboard**: User management, role assignment, and platform analytics
-- **Community Forum**: Discussion threads and posts for learner collaboration
-- **10 Comprehensive Modules**: Mathematics topics from basics to advanced concepts
-- **Responsive Design**: Mobile-first, modern UI with Tailwind CSS
-- **iiskills.cloud Branding**: Consistent UI components and color themes
+This platform is fully aligned with **iiskills-cloud standards** and matches the feature set of:
+- learn-pr (Public Relations)
+- learn-management (Management)
+- learn-leadership (Leadership)
+- learn-ai (Artificial Intelligence)
+
+## ✨ Key Features
+
+### Authentication & Security
+- **100% Supabase Authentication**: No local/server-side auth - all authentication through Supabase Auth
+- **Zero Legacy Code**: Fully migrated from file-based authentication
+- **Role-Based Access Control (RBAC)**: Comprehensive admin/user role management
+- **Row Level Security (RLS)**: Database-level security policies
+- **Protected Routes**: Middleware-based route protection
+
+### AI-Powered Education
+- **AI-Generated Curriculum**: All modules and quizzes created using advanced AI
+- **Indian Academic Standards**: Aligned with CBSE, ICSE, and NEP 2020
+- **EdTech Best Practices**: Industry-standard educational technology
+- **10 Comprehensive Modules**: From basics to advanced mathematics
+
+### Advanced Features
+- **Dynamic Math/EdTech News**: Stay updated with latest developments
+- **Career Opportunities**: Live job listings for mathematics professionals
+- **Support & Counseling**: 24/7 counselor support system
+- **Level-Based Onboarding**: Personalized learning path assessment
+- **Community Forum**: Discussion threads and collaborative learning
+- **Admin Dashboard**: Full RBAC with user management and analytics
+
+### User Experience
+- **Modern UI/UX**: Responsive design matching iiskills-cloud standards
+- **Level Assessment**: Personalized onboarding flow
+- **Progress Tracking**: Monitor learning journey
+- **Mobile-First**: Optimized for all devices
 
 ## Technologies
 
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS with custom iiskills.cloud theme
-- **Authentication**: Supabase Auth with Row Level Security (RLS)
-- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth (100% - no local auth)
+- **Database**: Supabase (PostgreSQL) with RLS
 - **Deployment**: Vercel-ready (or any Next.js compatible platform)
+
+## Quick Links
+
+- **Home**: Browse AI-generated modules and features
+- **News**: Latest math and EdTech developments
+- **Jobs**: Career opportunities for math professionals
+- **Support**: 24/7 counselor support
+- **Forum**: Community discussions (requires login)
+- **Onboarding**: Personalized level assessment
+- **Admin Panel**: User management with RBAC (admin only)
 
 ## Prerequisites
 
@@ -32,7 +69,7 @@ A modern, production-ready mathematics learning platform built with Next.js, Rea
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/phildass/iiskills-cloud/learn-math.git
+git clone https://github.com/phildass/learn-math.git
 cd learn-math
 ```
 
@@ -83,33 +120,57 @@ http://localhost:3000
 
 ## Usage
 
-### Authentication
+### Authentication (100% Supabase)
 
-**All authentication is handled through Supabase:**
+**All authentication is handled exclusively through Supabase - no local/server-side auth:**
 
-1. **Register**: Navigate to `/register` to create a new account
-2. **Login**: Use `/login` to sign in with your credentials
-3. **Logout**: Click the Logout button in the navigation bar
+1. **Register**: Navigate to `/register` to create a new account via Supabase Auth
+2. **Login**: Use `/login` to sign in with Supabase credentials
+3. **Logout**: Click the Logout button (handled by Supabase)
+4. **Onboarding**: Complete `/onboarding` for personalized experience
 
-### Accessing Features
+### Core Features
 
-1. **Home**: Browse the 10 mathematics modules
-2. **Forum**: Participate in community discussions (requires authentication)
+1. **Home**: Browse AI-generated mathematics modules
+2. **News**: View latest math and EdTech news
+3. **Jobs**: Explore career opportunities
+4. **Support**: Contact counselors for help
+5. **Forum**: Participate in community discussions (requires authentication)
    - Create new threads
    - Reply to existing threads
    - View all discussions
-3. **Profile**: Manage your account settings (requires authentication)
-4. **Admin Panel**: User management and platform administration (admin role only)
+6. **Profile**: Manage your account settings (requires authentication)
+7. **Admin Panel**: User management and platform administration (admin role only)
 
-### Admin Panel
+### Admin Panel (RBAC)
 
 **Access**: Available at `/admin` (requires admin role)
 
 **Features**:
-- View all registered users
+- View all registered users with advanced filtering
 - Manage user roles (promote users to admin)
-- View platform statistics
-- Monitor user activity
+- View comprehensive platform statistics
+- Monitor user activity and onboarding status
+- Search and filter users
+- Full RBAC implementation with Supabase RLS
+
+## AI-Generated Content
+
+### Curriculum Standards
+
+All educational content in this platform is **AI-generated** and aligned with:
+
+- **CBSE** (Central Board of Secondary Education) standards
+- **ICSE** (Indian Certificate of Secondary Education) standards
+- **NEP 2020** (National Education Policy 2020) guidelines
+- **EdTech Best Practices**: Industry-standard educational technology
+
+### Content Quality
+
+- **Modules**: 10 comprehensive modules covering mathematics from basics to advanced
+- **Quizzes**: AI-generated assessments aligned with Indian academic standards
+- **Curriculum Design**: Follows progressive learning pathways
+- **Regular Updates**: Content refreshed to match latest educational standards
 
 ## Project Structure
 
@@ -117,13 +178,17 @@ http://localhost:3000
 learn-math/
 ├── src/
 │   ├── app/                    # Next.js App Router
-│   │   ├── admin/             # Admin dashboard
-│   │   ├── forum/             # Forum feature
-│   │   ├── login/             # Login page
-│   │   ├── register/          # Registration page
+│   │   ├── admin/             # Admin dashboard with RBAC
+│   │   ├── forum/             # Community forum
+│   │   ├── jobs/              # Career opportunities
+│   │   ├── news/              # Math/EdTech news
+│   │   ├── onboarding/        # Level assessment
+│   │   ├── support/           # Counselor support
+│   │   ├── login/             # Supabase login
+│   │   ├── register/          # Supabase registration
 │   │   ├── profile/           # User profile
 │   │   ├── layout.tsx         # Root layout with LogoBar & Footer
-│   │   ├── page.tsx           # Home page
+│   │   ├── page.tsx           # Enhanced home page
 │   │   └── globals.css        # Global styles
 │   ├── components/            # Reusable React components
 │   │   ├── LogoBar.tsx        # Navigation bar
@@ -132,7 +197,11 @@ learn-math/
 │   │   └── supabaseClient.ts  # Supabase configuration
 │   └── middleware.ts          # Route protection middleware
 ├── docs/                      # Documentation
-│   └── supabase-schema.sql    # Database schema
+│   ├── supabase-schema.sql    # Enhanced database schema
+│   ├── SUPABASE_SETUP.md      # Setup guide
+│   ├── DEPLOYMENT.md          # Deployment guide
+│   ├── API.md                 # API reference
+│   └── MIGRATION.md           # Migration guide
 ├── public/                    # Static assets
 ├── .env.example              # Environment variables template
 ├── next.config.js            # Next.js configuration
@@ -143,12 +212,14 @@ learn-math/
 
 ## Database Schema
 
-The application uses Supabase with the following tables:
+The application uses Supabase with the following enhanced tables:
 
 ### profiles
-- User profile information
+- User profile information with email
 - Role-based access control (user/admin)
+- Onboarding data (level, interests, goals)
 - Links to auth.users
+- Enhanced RLS policies for RBAC
 
 ### forum_threads
 - Discussion thread titles and metadata
@@ -162,32 +233,56 @@ The application uses Supabase with the following tables:
 
 **Full schema**: See `docs/supabase-schema.sql`
 
-## API Routes & Features
+## Security & RBAC
 
-### Authentication (Supabase)
-- Email/password authentication
-- Session management
-- Protected routes via middleware
-
-### Forum Features
-- Create discussion threads
-- Post replies
-- View all threads and posts
-- Real-time updates
-
-### Admin Features
-- View all users
-- Manage user roles
-- Platform statistics
-
-## Security Features
-
-- **Supabase Authentication**: Industry-standard OAuth 2.0 flows
-- **Row Level Security (RLS)**: Database-level access control
-- **Role-Based Access Control**: Admin and user separation
+### Authentication
+- **100% Supabase Auth**: All authentication through Supabase - no local/legacy auth
+- **No users.json**: Fully migrated from file-based authentication
+- **Session Management**: Automatic refresh, HTTP-only cookies
 - **Protected Routes**: Middleware-based route protection
-- **Secure Sessions**: HTTP-only cookies, CSRF protection
+
+### Role-Based Access Control (RBAC)
+- **Two Roles**: Admin and User
+- **Admin Capabilities**:
+  - User management
+  - Role assignment
+  - Platform statistics
+  - Full dashboard access
+- **User Capabilities**:
+  - Learning modules
+  - Forum participation
+  - Profile management
+  - Support access
+
+### Database Security
+- **Row Level Security (RLS)**: Enabled on all tables
+- **Granular Policies**: Read/write operations controlled
+- **User Data Protection**: Users can only modify their own data
+- **Admin Override**: Admins can manage user roles via secure policies
 - **Environment Variables**: Sensitive data never committed to git
+
+## iiskills-cloud Alignment
+
+This platform matches feature parity with other iiskills-cloud domains:
+
+### Shared Features
+✅ Supabase-only authentication (no local auth)
+✅ Advanced RBAC implementation
+✅ Dynamic news section
+✅ Live jobs/opportunities
+✅ Support/counselor system
+✅ Level-based onboarding
+✅ Admin dashboard with analytics
+✅ Community forum
+✅ AI-generated content
+✅ Responsive UI/UX
+✅ Comprehensive documentation
+
+### Domain-Specific
+- **Mathematics Education**: Specialized for math curriculum
+- **Indian Academic Standards**: CBSE, ICSE, NEP 2020 alignment
+- **Math Career Focus**: Jobs tailored for mathematics professionals
+- **EdTech News**: Math and educational technology updates
 
 ## Deployment
 

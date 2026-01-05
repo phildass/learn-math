@@ -50,6 +50,7 @@ export default function RegisterPage() {
           .insert([
             {
               id: data.user.id,
+              email: email,
               full_name: fullName,
               role: 'user',
             },

@@ -72,6 +72,26 @@ export function LogoBar() {
             >
               Home
             </Link>
+            <Link 
+              href="/news" 
+              className={`px-3 py-2 rounded-md text-sm font-medium ${
+                pathname.startsWith('/news')
+                  ? 'text-primary-600 bg-primary-50' 
+                  : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+              }`}
+            >
+              News
+            </Link>
+            <Link 
+              href="/jobs" 
+              className={`px-3 py-2 rounded-md text-sm font-medium ${
+                pathname.startsWith('/jobs')
+                  ? 'text-primary-600 bg-primary-50' 
+                  : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+              }`}
+            >
+              Jobs
+            </Link>
             {user && (
               <>
                 <Link 
@@ -98,6 +118,16 @@ export function LogoBar() {
                 )}
               </>
             )}
+            <Link 
+              href="/support" 
+              className={`px-3 py-2 rounded-md text-sm font-medium ${
+                pathname.startsWith('/support')
+                  ? 'text-primary-600 bg-primary-50' 
+                  : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+              }`}
+            >
+              Support
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             {user ? (
