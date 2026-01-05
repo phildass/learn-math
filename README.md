@@ -1,162 +1,268 @@
-# Learn Math - Interactive Mathematics Tutorial Platform
+# Learn Math - iiskills.cloud Platform
 
-Learn the basics of math with ease through our comprehensive 10-module course covering topics from number systems to differential equations.
+**Advanced Mathematics Tutorial Platform** - Part of the iiskills.cloud ecosystem
+
+A modern, production-ready mathematics learning platform built with Next.js, React, and Supabase, featuring comprehensive authentication, role-based access control, and community forum.
 
 ## Features
 
-- **Centralized iiskills.cloud Authentication**: Secure authentication through iiskills.cloud central portal
-- **10 Comprehensive Modules**: Each with detailed lessons, examples, and fun facts
-- **Interactive Testing**: Test your knowledge with quizzes for each module (requires authentication)
-- **Session Management**: Authentication persists across page refreshes
-- **Responsive Design**: Works on desktop and mobile devices
-- **SSO Ready**: Prepared for future single sign-on integration
+- **Supabase Authentication**: Secure, scalable authentication with email/password
+- **Role-Based Access Control (RBAC)**: Admin and user roles with protected routes
+- **Admin Dashboard**: User management, role assignment, and platform analytics
+- **Community Forum**: Discussion threads and posts for learner collaboration
+- **10 Comprehensive Modules**: Mathematics topics from basics to advanced concepts
+- **Responsive Design**: Mobile-first, modern UI with Tailwind CSS
+- **iiskills.cloud Branding**: Consistent UI components and color themes
 
-## Installation & Local Deployment
+## Technologies
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm (comes with Node.js)
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS with custom iiskills.cloud theme
+- **Authentication**: Supabase Auth with Row Level Security (RLS)
+- **Database**: Supabase (PostgreSQL)
+- **Deployment**: Vercel-ready (or any Next.js compatible platform)
 
-### Setup Instructions
+## Prerequisites
 
-1. Clone the repository:
+- Node.js 18.x or higher
+- npm or yarn
+- Supabase account (free tier available)
+
+## Installation & Setup
+
+1. **Clone the repository:**
 ```bash
-git clone https://github.com/phildass/learn-math.git
+git clone https://github.com/phildass/iiskills-cloud/learn-math.git
 cd learn-math
 ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 ```bash
 npm install
 ```
 
-3. The server will automatically create a `users.json` file when first run to store user data.
+3. **Set up Supabase:**
+   
+   a. Create a new project at [supabase.com](https://supabase.com)
+   
+   b. In your Supabase project, go to SQL Editor and run the schema:
+   ```bash
+   # Copy contents from docs/supabase-schema.sql and run in SQL Editor
+   ```
+   
+   c. Copy your Supabase credentials from Settings > API
 
-4. Start the server:
+4. **Configure environment variables:**
 ```bash
-npm start
+cp .env.example .env.local
 ```
 
-4. Open your browser and navigate to:
+Edit `.env.local` and add your Supabase credentials:
+```
+NEXT_PUBLIC_SUPABASE_URL=your-project-url.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+5. **Create your first admin user:**
+   
+   After running the app, register a new user, then in Supabase SQL Editor:
+   ```sql
+   UPDATE profiles SET role = 'admin' WHERE id = 'your-user-id';
+   ```
+   You can find your user ID in the Supabase Authentication dashboard.
+
+6. **Start the development server:**
+```bash
+npm run dev
+```
+
+7. **Open your browser:**
 ```
 http://localhost:3000
 ```
-
-The application will be running on port 3000 by default.
 
 ## Usage
 
 ### Authentication
 
-**All users must authenticate through iiskills.cloud:**
+**All authentication is handled through Supabase:**
 
-1. Visit the Learn Math application at your deployment URL
-2. If not authenticated, you will be prompted to sign in through iiskills.cloud
-3. Click on the provided link to be redirected to https://iiskills.cloud/register
-4. Sign in with your existing iiskills.cloud account or create a new one
-5. After authentication on iiskills.cloud, you can access the Learn Math application
+1. **Register**: Navigate to `/register` to create a new account
+2. **Login**: Use `/login` to sign in with your credentials
+3. **Logout**: Click the Logout button in the navigation bar
 
-**Note:** Local registration and login have been disabled. All user account management is handled centrally through iiskills.cloud for enhanced security and unified user experience.
+### Accessing Features
 
-### Accessing Content
+1. **Home**: Browse the 10 mathematics modules
+2. **Forum**: Participate in community discussions (requires authentication)
+   - Create new threads
+   - Reply to existing threads
+   - View all discussions
+3. **Profile**: Manage your account settings (requires authentication)
+4. **Admin Panel**: User management and platform administration (admin role only)
 
-1. After authentication, access all 10 mathematics modules
-2. Click on any module to view lessons and examples
-3. Take module tests to assess your knowledge (authentication required)
+### Admin Panel
 
-### Logout
+**Access**: Available at `/admin` (requires admin role)
 
-Click the "Logout" button to end your session. You will be redirected to iiskills.cloud.
+**Features**:
+- View all registered users
+- Manage user roles (promote users to admin)
+- View platform statistics
+- Monitor user activity
 
 ## Project Structure
 
 ```
 learn-math/
-├── server.js              # Express server with API endpoints
-├── package.json           # Project dependencies
-├── index.html             # Main application page (protected)
-├── login.html             # Login and registration page
-├── auth.js                # Client-side authentication logic
-├── script.js              # Main application logic
-├── styles.css             # Application styles
-├── users.json             # User database (auto-created, not in git)
-├── users.json.template    # Template for users database
-└── .gitignore             # Git ignore file
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── admin/             # Admin dashboard
+│   │   ├── forum/             # Forum feature
+│   │   ├── login/             # Login page
+│   │   ├── register/          # Registration page
+│   │   ├── profile/           # User profile
+│   │   ├── layout.tsx         # Root layout with LogoBar & Footer
+│   │   ├── page.tsx           # Home page
+│   │   └── globals.css        # Global styles
+│   ├── components/            # Reusable React components
+│   │   ├── LogoBar.tsx        # Navigation bar
+│   │   └── Footer.tsx         # Footer component
+│   ├── lib/                   # Utility libraries
+│   │   └── supabaseClient.ts  # Supabase configuration
+│   └── middleware.ts          # Route protection middleware
+├── docs/                      # Documentation
+│   └── supabase-schema.sql    # Database schema
+├── public/                    # Static assets
+├── .env.example              # Environment variables template
+├── next.config.js            # Next.js configuration
+├── tailwind.config.js        # Tailwind CSS configuration
+├── tsconfig.json             # TypeScript configuration
+└── package.json              # Project dependencies
 ```
 
-## API Endpoints
+## Database Schema
 
-### Authentication Endpoints (Modified)
+The application uses Supabase with the following tables:
 
-- `POST /api/register` - **DISABLED** - Returns redirect URL to iiskills.cloud
-- `POST /api/login` - **DISABLED** - Returns redirect URL to iiskills.cloud
-- `POST /api/logout` - Logout current user session
-- `GET /api/auth/status` - Check authentication status
+### profiles
+- User profile information
+- Role-based access control (user/admin)
+- Links to auth.users
 
-**Note:** Local registration and login endpoints have been disabled. All authentication handled centrally through iiskills.cloud.
+### forum_threads
+- Discussion thread titles and metadata
+- Author references
+- Timestamps
 
-### Protected Endpoints
+### forum_posts
+- Individual posts within threads
+- Content and author information
+- Thread relationships
 
-All endpoints below require authentication:
+**Full schema**: See `docs/supabase-schema.sql`
 
-- `GET /api/profile` - Get user profile
-- `PUT /api/profile` - Update user profile  
-- `POST /api/change-password` - Change password
-- `POST /api/test-result` - Save test result
-- `GET /api/admin/users` - Get all users (admin only)
-- `GET /api/admin/modules` - Get module data (admin only)
+## API Routes & Features
+
+### Authentication (Supabase)
+- Email/password authentication
+- Session management
+- Protected routes via middleware
+
+### Forum Features
+- Create discussion threads
+- Post replies
+- View all threads and posts
+- Real-time updates
+
+### Admin Features
+- View all users
+- Manage user roles
+- Platform statistics
 
 ## Security Features
 
-- **Centralized Authentication**: All authentication handled centrally through iiskills.cloud
-- **No Local Password Storage**: Passwords managed centrally for enhanced security
-- **Session Management**: Secure session handling with express-session
-- **Protected Routes**: Tutorial content and tests only accessible after authentication
-- **Input Sanitization**: All user inputs are sanitized to prevent XSS attacks
-- **SSO Ready**: Prepared for OAuth/SAML integration with iiskills.cloud
+- **Supabase Authentication**: Industry-standard OAuth 2.0 flows
+- **Row Level Security (RLS)**: Database-level access control
+- **Role-Based Access Control**: Admin and user separation
+- **Protected Routes**: Middleware-based route protection
+- **Secure Sessions**: HTTP-only cookies, CSRF protection
+- **Environment Variables**: Sensitive data never committed to git
 
-### Future SSO Integration
+## Deployment
 
-The application is prepared for future integration with iiskills.cloud Single Sign-On (SSO):
-- OAuth 2.0 / SAML authentication flow
-- Automatic user provisioning from iiskills.cloud
-- Role-based access control (RBAC) from central identity provider
-- Token-based authentication for API access
+### Vercel (Recommended)
 
-## Deployment to Production
+1. **Push your code to GitHub** (if not already done)
 
-For deployment on learnmath.iiskills.cloud:
-
-1. Set up your production server with Node.js
-2. Clone the repository on the server
-3. Install dependencies: `npm install`
-4. Set environment variables:
+2. **Deploy to Vercel**:
    ```bash
-   export PORT=3000
-   export NODE_ENV=production
+   npm install -g vercel
+   vercel
    ```
-5. For HTTPS in production, update session configuration in server.js:
-   ```javascript
-   cookie: { 
-       secure: true,  // Set to true for HTTPS
-       maxAge: 24 * 60 * 60 * 1000
-   }
-   ```
-6. Use a process manager like PM2:
+
+3. **Set environment variables** in Vercel dashboard:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+4. **Deploy**:
    ```bash
-   npm install -g pm2
-   pm2 start server.js
-   pm2 save
-   pm2 startup
+   vercel --prod
    ```
 
-## Technologies Used
+### Other Platforms
 
-- **Backend**: Node.js, Express.js
-- **Authentication**: bcrypt, express-session
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Data Storage**: JSON file-based storage
+The application is a standard Next.js app and can be deployed to:
+- Netlify
+- AWS Amplify
+- Digital Ocean App Platform
+- Any platform supporting Next.js
+
+## Development
+
+### Running Locally
+```bash
+npm run dev        # Development server with hot reload
+npm run build      # Production build
+npm run start      # Production server
+npm run lint       # ESLint checking
+```
+
+### Environment Variables
+
+Required environment variables:
+- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+
+## Migration from Old Version
+
+The old Express.js version has been moved to `old-app/` directory for reference. To migrate existing users:
+
+1. Export users from `old-app/users.json`
+2. Create corresponding users in Supabase Auth
+3. Update roles in `profiles` table
+4. Migrate any module progress data if needed
+
+## Contributing
+
+This is part of the iiskills-cloud platform. For contributions:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ## License
 
 ISC
+
+## Support
+
+For issues and questions:
+- GitHub Issues: [Repository Issues](https://github.com/phildass/iiskills-cloud)
+- Documentation: See `docs/` directory
+- Supabase Docs: [supabase.com/docs](https://supabase.com/docs)
+
+---
+
+**Part of iiskills.cloud Platform** - Advanced Mathematics Learning Platform

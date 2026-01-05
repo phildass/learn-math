@@ -3,3 +3,26 @@ npm-debug.log
 .DS_Store
 *.log
 users.json
+
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# Old Express app (preserved for reference)
+old-app/
